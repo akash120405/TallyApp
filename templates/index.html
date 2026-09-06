@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tally — a ledger for your subscriptions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="masthead-mark">
+      <span class="masthead-glyph">T</span>
+      <div>
+        <h1>Tally</h1>
+        <p>A ledger for what you're actually paying for.</p>
+      </div>
+    </div>
+    <button class="ghost-btn" id="reset-btn" type="button">Clear the ledger</button>
+  </header>
+
+  <main class="layout">
+
+    <section class="ledger-panel" aria-labelledby="ledger-heading">
+
+      <div class="balance-row">
+        <div class="balance-figure">
+          <span class="balance-label">Committed each month</span>
+          <span class="balance-amount" id="monthly-total">$0.00</span>
+        </div>
+        <div class="balance-figure balance-figure--secondary">
+          <span class="balance-label">Projected this year</span>
+          <span class="balance-amount balance-amount--small" id="yearly-total">$0.00</span>
+        </div>
+      </div>
+
+      <div class="headroom" id="headroom-block">
+        <div class="headroom-top">
+          <label for="budget-input">Monthly budget</label>
+          <div class="budget-input-wrap">
+            <span>$</span>
+            <input type="number" id="budget-input" min="0" step="1" placeholder="No limit set">
+          </div>
+        </div>
+        <div class="headroom-track" role="img" aria-label="Spending against budget">
+          <div class="headroom-fill" id="headroom-fill"></div>
+        </div>
+        <p class="headroom-note" id="headroom-note">Set a budget to see your headroom.</p>
+      </div>
+
+      <div class="renewals" id="renewals-block" hidden>
+        <span class="renewals-label">Next to renew</span>
+        <div class="renewals-chips" id="renewals-chips"></div>
+      </div>
+
+      <h2 id="ledger-heading">The ledger</h2>
+
+      <div class="ledger-table" id="ledger-table">
+        <div class="ledger-row ledger-row--head" aria-hidden="true">
+          <span>Subscription</span>
+          <span>Renews</span>
+          <span>Monthly</span>
+          <span></span>
+        </div>
+        <div id="ledger-rows"></div>
+        <p class="ledger-empty" id="ledger-empty">Nothing logged yet. Add one below, or tell the clerk.</p>
+      </div>
+
+      <form class="quick-add" id="quick-add-form">
+        <input type="text" id="add-name" placeholder="Service name" aria-label="Service name" required>
+        <input type="text" id="add-renewal" placeholder="Renews (e.g. 5th)" aria-label="Renewal date">
+        <div class="quick-add-cost">
+          <span>$</span>
+          <input type="number" id="add-cost" placeholder="0.00" min="0" step="0.01" aria-label="Monthly cost" required>
+        </div>
+        <button type="submit">Add entry</button>
+      </form>
+
+    </section>
+
+    <section class="clerk-panel" aria-labelledby="clerk-heading">
+      <h2 id="clerk-heading">Ask the clerk</h2>
+      <p class="clerk-sub">Talk to it plainly — add subscriptions, set a budget, or ask what to cancel.</p>
+
+      <div class="clerk-thread" id="clerk-thread">
+        <div class="bubble bubble--clerk">
+          Tell me about a subscription and I'll log it, tally your spending, and flag anything over budget.
+        </div>
+      </div>
+
+      <form class="clerk-form" id="clerk-form">
+        <textarea id="clerk-input" rows="2" placeholder="e.g. Add Netflix for $15, renews on the 5th" required></textarea>
+        <button type="submit" id="clerk-send">Send</button>
+      </form>
+    </section>
+
+  </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
