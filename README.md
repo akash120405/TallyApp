@@ -62,7 +62,7 @@ you pick instead of shipping the `.env` file.
 
 
 
-                 YOUR PROJECT
+                 TallyApp
                      │
                      ▼
                Natural Language
