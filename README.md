@@ -58,3 +58,37 @@ database), so the simplest hosts are ones that run a single
 long-lived Python process — Render, Railway, Fly.io, or a small VPS.
 Set `NVIDIA_API_KEY` as an environment variable on whichever platform
 you pick instead of shipping the `.env` file.
+
+
+
+
+                 YOUR PROJECT
+                     │
+                     ▼
+               Natural Language
+                     │
+                     ▼
+                    NLP
+                     │
+                     ▼
+                    LLM
+              (understands request)
+                     │
+                     ▼
+                 LangChain
+          (connects LLM with tools)
+                     │
+                     ▼
+                 LangGraph
+           (controls the workflow)
+                     │
+                     ▼
+               Agentic AI
+                     │
+              ┌──────┴──────┐
+              ▼             ▼
+        Add subscription   Check budget
+              │             │
+              └──────┬──────┘
+                     ▼
+                Final response
