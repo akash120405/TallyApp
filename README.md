@@ -88,6 +88,9 @@ you pick instead of shipping the `.env` file.
               ┌──────┴──────┐
               ▼             ▼
         Add subscription   Check budget
+
+        <img width="732" height="673" alt="image" src="https://github.com/user-attachments/assets/c016906e-2285-4af0-a26c-f9d97ec2c3d8" />
+
               │             │
               └──────┬──────┘
                      ▼
