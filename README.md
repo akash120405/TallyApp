@@ -1,4 +1,4 @@
-# Tally — a ledger for your subscriptions
+# Tally — a ledger for your subscriptions | Subscription Management Agent
 
 A small web app around the Subscription Manager Agent: a Flask backend
 wraps the original LangChain agent and tools, and a browser frontend
