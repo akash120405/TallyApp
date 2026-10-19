@@ -64,7 +64,6 @@ you pick instead of shipping the `.env` file.
 |---|---|---|
 | `add_subscription()` | Adds a subscription record to the ledger. | “Add Netflix for ₹500 monthly.” |
 | `remove_subscription()` | Removes a subscription record from the ledger. | “Remove Netflix.” |
-| `get_monthly_total()` | Calculates total monthly subscription spending. | “How much do I spend monthly?” |
 
 
 
