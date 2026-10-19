@@ -59,6 +59,12 @@ long-lived Python process — Render, Railway, Fly.io, or a small VPS.
 Set `NVIDIA_API_KEY` as an environment variable on whichever platform
 you pick instead of shipping the `.env` file.
 
+## Tools Used
+| Tool | What it does | Example request |
+|---|---|---|
+| `add_subscription()` | Adds a subscription record to the ledger. | “Add Netflix for ₹500 monthly.” |
+| `remove_subscription()` | Removes a subscription record from the ledger. | “Remove Netflix.” |
+| `get_monthly_total()` | Calculates total monthly subscription spending. | “How much do I spend monthly?” |
 
 
 
