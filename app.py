@@ -59,6 +59,7 @@ def serialize_state():
         "average_cost": round(monthly_total / len(items), 2) if items else 0,
         "recommendation_threshold": RECOMMENDATION_THRESHOLD,
         "recommendations": recommendations,
+        "monthly_budget": tools.budget,
     }
 
 
@@ -69,6 +70,21 @@ def index():
 
 @app.route("/api/subscriptions", methods=["GET"])
 def list_subscriptions():
+    return jsonify(serialize_state())
+
+
+@app.route("/api/budget", methods=["PUT"])
+def update_budget():
+    data = request.get_json(force=True) or {}
+    amount = data.get("amount")
+    if amount in (None, ""):
+        tools.budget = None
+        return jsonify(serialize_state())
+
+    try:
+        tools.set_monthly_budget.invoke({"amount": amount})
+    except (ValueError, TypeError):
+        return jsonify({"error": "Budget must be a number greater than zero."}), 400
     return jsonify(serialize_state())
 
 
@@ -115,6 +131,7 @@ def chat():
 def reset():
     global agent
     tools.memory.clear()
+    tools.budget = None
     agent = SubscriptionAgent()
     return jsonify(serialize_state())
 

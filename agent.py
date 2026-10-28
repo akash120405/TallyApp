@@ -7,14 +7,14 @@ import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage, ToolMessage
-from tools import add_subscription, remove_subscription, get_monthly_total
+from tools import add_subscription, remove_subscription, get_monthly_total, set_monthly_budget
 
 load_dotenv()
 
 # Map tool names to their functions
 TOOL_MAP = {
     t.name: t
-    for t in [add_subscription, remove_subscription, get_monthly_total]
+    for t in [add_subscription, remove_subscription, get_monthly_total, set_monthly_budget]
 }
 
 NVIDIA_API_KEY = os.environ.get("NVIDIA_API_KEY", "")
@@ -40,6 +40,7 @@ SYSTEM_PROMPT = (
     "You are a Subscription Manager Agent. "
     "Use `add_subscription` for new subscriptions, "
     "`remove_subscription` to cancel one, "
+    "`set_monthly_budget` to set or change the monthly budget, "
     "then `get_monthly_total` to inspect totals. "
     "If over budget, suggest what to cancel. "
     "All amounts are in Indian rupees (₹), never dollars. "

@@ -1,14 +1,13 @@
 """
 Tools and Memory for Subscription Manager using LangChain @tool decorator.
-Three tools: add_subscription(name, cost), remove_subscription(name), and
-get_monthly_total(). Includes Group of 3 add-ons: renewal-date reminders
-and yearly-cost view.
+Tools for managing subscriptions, the monthly budget, and spending totals.
 """
 
 from langchain_core.tools import tool
 
 # Memory: Remembers all active subscriptions across turns
 memory = {}
+budget = None
 
 @tool
 def add_subscription(name: str, cost: float, renewal_date: str = "1st of next month") -> str:
@@ -43,3 +42,14 @@ def get_monthly_total() -> str:
         f"Monthly Total: ₹{monthly_total:.2f} | "
         f"Yearly Total: ₹{yearly_total:.2f}"
     )
+
+
+@tool
+def set_monthly_budget(amount: float | str) -> str:
+    """Set or replace the monthly subscription budget in Indian rupees."""
+    global budget
+    amount_val = float(str(amount).replace("$", "").replace("₹", "").replace("INR", "").replace(",", "").strip())
+    if amount_val <= 0:
+        raise ValueError("Budget must be greater than zero.")
+    budget = amount_val
+    return f"Monthly budget set to ₹{amount_val:,.2f}."

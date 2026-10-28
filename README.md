@@ -39,7 +39,8 @@ Then open **http://localhost:5000** in your browser.
 - Or skip the chat and use the quick-add row at the bottom of the ledger
   table to add an entry instantly, without going through the model.
 - Set a monthly budget in the ledger panel to see a headroom bar (it's
-  stored in your browser only).
+  saved by the Flask app and restored when the ledger reloads). The clerk can
+  also set it when you say something like *"Set my monthly budget to ₹5,000"*.
 - "Clear the ledger" wipes all subscriptions and starts a fresh
   conversation with the agent.
 - All totals and inputs use Indian rupees (₹).

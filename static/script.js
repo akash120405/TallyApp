@@ -32,23 +32,10 @@
     currency: 'INR',
     minimumFractionDigits: 2,
   }).format(Number(n || 0));
-  const BUDGET_KEY = 'tally_budget';
-
-  function getBudget() {
-    const raw = localStorage.getItem(BUDGET_KEY);
-    return raw ? Number(raw) : null;
-  }
-
-  function setBudget(value) {
-    if (value === null || Number.isNaN(value)) {
-      localStorage.removeItem(BUDGET_KEY);
-    } else {
-      localStorage.setItem(BUDGET_KEY, String(value));
-    }
-  }
+  let currentBudget = null;
 
   function renderHeadroom(monthlyTotal) {
-    const budget = getBudget();
+    const budget = currentBudget;
     els.headroomFill.classList.remove('state-warn', 'state-over');
     els.headroomNote.classList.remove('state-over');
 
@@ -149,6 +136,8 @@
     els.monthlyTotal.textContent = money(state.monthly_total);
     els.yearlyTotal.textContent = money(state.yearly_total);
     currentSubscriptions = state.subscriptions;
+    currentBudget = state.monthly_budget;
+    els.budgetInput.value = currentBudget === null ? '' : currentBudget;
     renderHeadroom(state.monthly_total);
     renderRenewals(state.subscriptions);
     renderLedger(state.subscriptions);
@@ -266,10 +255,23 @@
     }
   });
 
-  els.budgetInput.addEventListener('input', () => {
+  els.budgetInput.addEventListener('change', () => {
     const val = els.budgetInput.value === '' ? null : Number(els.budgetInput.value);
-    setBudget(val);
-    fetchState();
+    if (val !== null && (!Number.isFinite(val) || val <= 0)) return;
+    fetch('/api/budget', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: val }),
+    }).then(async (res) => {
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || 'Could not save your budget.');
+        return;
+      }
+      renderState(data);
+    }).catch(() => {
+      alert('Could not save your budget. Is the app running?');
+    });
   });
 
   els.resetBtn.addEventListener('click', async () => {
@@ -290,7 +292,5 @@
   });
 
   // Init
-  const savedBudget = getBudget();
-  if (savedBudget !== null) els.budgetInput.value = savedBudget;
   fetchState();
 })();

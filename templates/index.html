@@ -69,25 +69,25 @@
           <input type="search" id="search-input" placeholder="Search subscriptions">
           <button class="text-btn" id="export-btn" type="button">Export CSV</button>
         </div>
-      <div class="ledger-table" id="ledger-table">
-        <div class="ledger-row ledger-row--head" aria-hidden="true">
-          <span>Subscription</span>
-          <span>Renews</span>
-          <span>Monthly</span>
-          <span></span>
+        <div class="ledger-table" id="ledger-table">
+          <div class="ledger-row ledger-row--head" aria-hidden="true">
+            <span>Subscription</span>
+            <span>Renews</span>
+            <span>Monthly</span>
+            <span></span>
+          </div>
+          <div id="ledger-rows"></div>
+          <p class="ledger-empty" id="ledger-empty">Nothing logged yet. Add one below, or tell the clerk.</p>
         </div>
-        </div>
+      </div>
 
-        <div id="recommendations-view" role="tabpanel" aria-labelledby="recommendations-tab" hidden>
+      <div id="recommendations-view" role="tabpanel" aria-labelledby="recommendations-tab" hidden>
           <div class="recommendation-intro">
             <span class="recommendation-kicker">Smart savings review</span>
             <h3>Make your recurring spend work harder.</h3>
             <p>These suggestions focus on your largest monthly commitments. Review them before your next renewal.</p>
           </div>
-          <div id="recommendation-list" class="recommendation-list"></div>
-        </div>
-        <div id="ledger-rows"></div>
-        <p class="ledger-empty" id="ledger-empty">Nothing logged yet. Add one below, or tell the clerk.</p>
+          <div id="recommendation-list" class="recommendation-list">          </div>
       </div>
 
       <form class="quick-add" id="quick-add-form">
