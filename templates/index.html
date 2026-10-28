@@ -31,11 +31,11 @@
       <div class="balance-row">
         <div class="balance-figure">
           <span class="balance-label">Committed each month</span>
-          <span class="balance-amount" id="monthly-total">$0.00</span>
+          <span class="balance-amount" id="monthly-total">₹0.00</span>
         </div>
         <div class="balance-figure balance-figure--secondary">
           <span class="balance-label">Projected this year</span>
-          <span class="balance-amount balance-amount--small" id="yearly-total">$0.00</span>
+          <span class="balance-amount balance-amount--small" id="yearly-total">₹0.00</span>
         </div>
       </div>
 
@@ -43,7 +43,7 @@
         <div class="headroom-top">
           <label for="budget-input">Monthly budget</label>
           <div class="budget-input-wrap">
-            <span>$</span>
+            <span>₹</span>
             <input type="number" id="budget-input" min="0" step="1" placeholder="No limit set">
           </div>
         </div>
@@ -58,14 +58,33 @@
         <div class="renewals-chips" id="renewals-chips"></div>
       </div>
 
-      <h2 id="ledger-heading">The ledger</h2>
+      <div class="section-tabs" role="tablist" aria-label="Subscription views">
+        <button class="section-tab is-active" id="ledger-tab" type="button" role="tab" aria-selected="true">The ledger</button>
+        <button class="section-tab" id="recommendations-tab" type="button" role="tab" aria-selected="false" hidden>Recommendations</button>
+      </div>
 
+      <div id="ledger-view" role="tabpanel" aria-labelledby="ledger-tab">
+        <div class="ledger-tools">
+          <label class="sr-only" for="search-input">Search subscriptions</label>
+          <input type="search" id="search-input" placeholder="Search subscriptions">
+          <button class="text-btn" id="export-btn" type="button">Export CSV</button>
+        </div>
       <div class="ledger-table" id="ledger-table">
         <div class="ledger-row ledger-row--head" aria-hidden="true">
           <span>Subscription</span>
           <span>Renews</span>
           <span>Monthly</span>
           <span></span>
+        </div>
+        </div>
+
+        <div id="recommendations-view" role="tabpanel" aria-labelledby="recommendations-tab" hidden>
+          <div class="recommendation-intro">
+            <span class="recommendation-kicker">Smart savings review</span>
+            <h3>Make your recurring spend work harder.</h3>
+            <p>These suggestions focus on your largest monthly commitments. Review them before your next renewal.</p>
+          </div>
+          <div id="recommendation-list" class="recommendation-list"></div>
         </div>
         <div id="ledger-rows"></div>
         <p class="ledger-empty" id="ledger-empty">Nothing logged yet. Add one below, or tell the clerk.</p>
@@ -75,7 +94,7 @@
         <input type="text" id="add-name" placeholder="Service name" aria-label="Service name" required>
         <input type="text" id="add-renewal" placeholder="Renews (e.g. 5th)" aria-label="Renewal date">
         <div class="quick-add-cost">
-          <span>$</span>
+          <span>₹</span>
           <input type="number" id="add-cost" placeholder="0.00" min="0" step="0.01" aria-label="Monthly cost" required>
         </div>
         <button type="submit">Add entry</button>
@@ -94,7 +113,7 @@
       </div>
 
       <form class="clerk-form" id="clerk-form">
-        <textarea id="clerk-input" rows="2" placeholder="e.g. Add Netflix for $15, renews on the 5th" required></textarea>
+        <textarea id="clerk-input" rows="2" placeholder="e.g. Add Netflix for ₹500, renews on the 5th" required></textarea>
         <button type="submit" id="clerk-send">Send</button>
       </form>
     </section>

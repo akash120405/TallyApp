@@ -34,7 +34,7 @@ Then open **http://localhost:5000** in your browser.
 ## Using it
 
 - Type naturally in the "Ask the clerk" panel — e.g. *"Add Netflix for
-  $15, renews on the 5th"* or *"I'm over my $50 budget, what should I
+  ₹500, renews on the 5th"* or *"I'm over my ₹5,000 budget, what should I
   cancel?"* — and the agent will call its tools and reply.
 - Or skip the chat and use the quick-add row at the bottom of the ledger
   table to add an entry instantly, without going through the model.
@@ -42,6 +42,10 @@ Then open **http://localhost:5000** in your browser.
   stored in your browser only).
 - "Clear the ledger" wipes all subscriptions and starts a fresh
   conversation with the agent.
+- All totals and inputs use Indian rupees (₹).
+- When monthly spending goes above ₹5,000, the **Recommendations** tab highlights
+  the largest recurring costs and estimates monthly and yearly savings.
+- Search the ledger or export its current entries as a CSV for budgeting.
 
 ## About the API key
 

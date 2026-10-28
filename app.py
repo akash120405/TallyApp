@@ -13,6 +13,35 @@ import tools
 app = Flask(__name__)
 
 agent = SubscriptionAgent()
+RECOMMENDATION_THRESHOLD = 5000
+
+
+def build_recommendations():
+    """Return practical savings suggestions for higher-spend ledgers."""
+    subscriptions = sorted(
+        tools.memory.items(),
+        key=lambda item: item[1]["cost"],
+        reverse=True,
+    )
+    monthly_total = sum(data["cost"] for _, data in subscriptions)
+    if monthly_total <= RECOMMENDATION_THRESHOLD:
+        return []
+
+    recommendations = []
+    for name, data in subscriptions[:3]:
+        monthly_saving = round(data["cost"], 2)
+        recommendations.append({
+            "title": f"Review {name}",
+            "detail": (
+                f"At ₹{monthly_saving:,.2f}/month, this is one of your "
+                "largest recurring costs. Canceling or downgrading it could "
+                "free up meaningful headroom."
+            ),
+            "monthly_saving": monthly_saving,
+            "yearly_saving": round(monthly_saving * 12, 2),
+        })
+
+    return recommendations
 
 
 def serialize_state():
@@ -21,10 +50,15 @@ def serialize_state():
         for name, data in tools.memory.items()
     ]
     monthly_total = sum(data["cost"] for data in tools.memory.values())
+    recommendations = build_recommendations()
     return {
         "subscriptions": items,
         "monthly_total": round(monthly_total, 2),
         "yearly_total": round(monthly_total * 12, 2),
+        "subscription_count": len(items),
+        "average_cost": round(monthly_total / len(items), 2) if items else 0,
+        "recommendation_threshold": RECOMMENDATION_THRESHOLD,
+        "recommendations": recommendations,
     }
 
 

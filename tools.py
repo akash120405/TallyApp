@@ -13,12 +13,12 @@ memory = {}
 @tool
 def add_subscription(name: str, cost: float, renewal_date: str = "1st of next month") -> str:
     """Add or update a subscription with its monthly cost and renewal date."""
-    cost_val = float(str(cost).replace("$", "").strip())
+    cost_val = float(str(cost).replace("$", "").replace("₹", "").replace("INR", "").strip())
     memory[name.strip()] = {
         "cost": cost_val,
         "renewal_date": str(renewal_date)
     }
-    return f"Added '{name}' at ${cost_val:.2f}/month (Renewal Date: {renewal_date})."
+    return f"Added '{name}' at ₹{cost_val:.2f}/month (Renewal Date: {renewal_date})."
 
 @tool
 def remove_subscription(name: str) -> str:
@@ -40,6 +40,6 @@ def get_monthly_total() -> str:
     yearly_total = monthly_total * 12
     return (
         f"Active Subscriptions: {memory} | "
-        f"Monthly Total: ${monthly_total:.2f} | "
-        f"Yearly Total: ${yearly_total:.2f}"
+        f"Monthly Total: ₹{monthly_total:.2f} | "
+        f"Yearly Total: ₹{yearly_total:.2f}"
     )

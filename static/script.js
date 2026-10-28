@@ -18,9 +18,20 @@
     clerkInput: document.getElementById('clerk-input'),
     clerkSend: document.getElementById('clerk-send'),
     resetBtn: document.getElementById('reset-btn'),
+    ledgerTab: document.getElementById('ledger-tab'),
+    recommendationsTab: document.getElementById('recommendations-tab'),
+    ledgerView: document.getElementById('ledger-view'),
+    recommendationsView: document.getElementById('recommendations-view'),
+    recommendationList: document.getElementById('recommendation-list'),
+    searchInput: document.getElementById('search-input'),
+    exportBtn: document.getElementById('export-btn'),
   };
 
-  const money = (n) => `$${Number(n || 0).toFixed(2)}`;
+  const money = (n) => new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    minimumFractionDigits: 2,
+  }).format(Number(n || 0));
   const BUDGET_KEY = 'tally_budget';
 
   function getBudget() {
@@ -78,6 +89,8 @@
     });
   }
 
+  let currentSubscriptions = [];
+
   function renderLedger(subs) {
     els.ledgerRows.innerHTML = '';
     els.ledgerEmpty.style.display = subs.length ? 'none' : 'block';
@@ -96,6 +109,36 @@
     });
   }
 
+  function renderRecommendations(state) {
+    const unlocked = state.monthly_total > state.recommendation_threshold;
+    els.recommendationsTab.hidden = !unlocked;
+    if (!unlocked) {
+      els.recommendationsView.hidden = true;
+      els.ledgerView.hidden = false;
+      els.ledgerTab.classList.add('is-active');
+      els.ledgerTab.setAttribute('aria-selected', 'true');
+      return;
+    }
+
+    els.recommendationList.innerHTML = '';
+    state.recommendations.forEach((recommendation) => {
+      const card = document.createElement('article');
+      card.className = 'recommendation-card';
+      card.innerHTML = `
+        <div>
+          <h4>${escapeHtml(recommendation.title)}</h4>
+          <p>${escapeHtml(recommendation.detail)}</p>
+        </div>
+        <div class="recommendation-saving">
+          <strong>${money(recommendation.monthly_saving)}</strong>
+          <span>possible monthly saving</span>
+          <small>${money(recommendation.yearly_saving)} yearly</small>
+        </div>
+      `;
+      els.recommendationList.appendChild(card);
+    });
+  }
+
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
@@ -105,9 +148,33 @@
   function renderState(state) {
     els.monthlyTotal.textContent = money(state.monthly_total);
     els.yearlyTotal.textContent = money(state.yearly_total);
+    currentSubscriptions = state.subscriptions;
     renderHeadroom(state.monthly_total);
     renderRenewals(state.subscriptions);
     renderLedger(state.subscriptions);
+    renderRecommendations(state);
+  }
+
+  function showView(view) {
+    const recommendations = view === 'recommendations';
+    els.ledgerView.hidden = recommendations;
+    els.recommendationsView.hidden = !recommendations;
+    els.ledgerTab.classList.toggle('is-active', !recommendations);
+    els.recommendationsTab.classList.toggle('is-active', recommendations);
+    els.ledgerTab.setAttribute('aria-selected', String(!recommendations));
+    els.recommendationsTab.setAttribute('aria-selected', String(recommendations));
+  }
+
+  function exportCsv() {
+    const rows = [['Subscription', 'Renewal date', 'Monthly cost (INR)']];
+    currentSubscriptions.forEach((s) => rows.push([s.name, s.renewal_date, s.cost]));
+    const csv = rows.map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'tally-subscriptions.csv';
+    link.click();
+    URL.revokeObjectURL(url);
   }
 
   async function fetchState() {
@@ -212,6 +279,14 @@
     renderState(data);
     els.clerkThread.innerHTML = '';
     addBubble("Ledger's clear. Tell me about a subscription whenever you're ready.", 'clerk');
+  });
+
+  els.ledgerTab.addEventListener('click', () => showView('ledger'));
+  els.recommendationsTab.addEventListener('click', () => showView('recommendations'));
+  els.exportBtn.addEventListener('click', exportCsv);
+  els.searchInput.addEventListener('input', () => {
+    const query = els.searchInput.value.trim().toLowerCase();
+    renderLedger(currentSubscriptions.filter((s) => s.name.toLowerCase().includes(query)));
   });
 
   // Init

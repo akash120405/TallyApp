@@ -42,6 +42,7 @@ SYSTEM_PROMPT = (
     "`remove_subscription` to cancel one, "
     "then `get_monthly_total` to inspect totals. "
     "If over budget, suggest what to cancel. "
+    "All amounts are in Indian rupees (₹), never dollars. "
     "Always give a short, concise response with monthly total, "
     "yearly total, and renewal reminders."
 )
