@@ -44,7 +44,7 @@ Then open **http://localhost:5000** in your browser.
 - "Clear the ledger" wipes all subscriptions and starts a fresh
   conversation with the agent.
 - All totals and inputs use Indian rupees (₹).
-- When monthly spending goes above ₹5,000, the **Recommendations** tab highlights
+- When monthly spending goes above ₹4,999, the **Recommendations** tab highlights
   the largest recurring costs and estimates monthly and yearly savings.
 - Search the ledger or export its current entries as a CSV for budgeting.
 

@@ -97,7 +97,7 @@
   }
 
   function renderRecommendations(state) {
-    const unlocked = state.monthly_total > state.recommendation_threshold;
+    const unlocked = state.recommendations_available;
     els.recommendationsTab.hidden = !unlocked;
     if (!unlocked) {
       els.recommendationsView.hidden = true;

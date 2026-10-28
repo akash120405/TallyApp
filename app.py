@@ -13,7 +13,7 @@ import tools
 app = Flask(__name__)
 
 agent = SubscriptionAgent()
-RECOMMENDATION_THRESHOLD = 5000
+RECOMMENDATION_THRESHOLD = 4999
 
 
 def build_recommendations():
@@ -51,6 +51,7 @@ def serialize_state():
     ]
     monthly_total = sum(data["cost"] for data in tools.memory.values())
     recommendations = build_recommendations()
+    recommendations_available = monthly_total > RECOMMENDATION_THRESHOLD
     return {
         "subscriptions": items,
         "monthly_total": round(monthly_total, 2),
@@ -58,6 +59,7 @@ def serialize_state():
         "subscription_count": len(items),
         "average_cost": round(monthly_total / len(items), 2) if items else 0,
         "recommendation_threshold": RECOMMENDATION_THRESHOLD,
+        "recommendations_available": recommendations_available,
         "recommendations": recommendations,
         "monthly_budget": tools.budget,
     }
